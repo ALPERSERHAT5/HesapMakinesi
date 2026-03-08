@@ -1,0 +1,203 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hesap Makinesi</title>
+     <style>* {
+        margin: 0;          
+        padding: 0;         
+        box-sizing: border-box;  
+    }
+ body {
+        background: linear-gradient(135deg, #667eea, #764ba2);/*geçişli renk sağlar*/
+        min-height: 100vh;         
+        display: flex;               
+        justify-content: center;     
+        align-items: center;         
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+    }
+
+    .hesap-makinesi {
+        background: #2c3e50;         
+        padding: 20px;                
+        border-radius: 20px;         
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);  
+        width: 300px;                
+    }
+
+    
+    .ekran {
+        width: 100%;                 
+        height: 70px;                 
+        background: #34495e;          
+        border: none;                 
+        border-radius: 10px;          
+        margin-bottom: 15px;          
+        padding: 0 15px;              
+        font-size: 28px;              
+        color: white;                 
+        text-align: right;            
+        outline: none;                /* Tıklanınca kenarlık olmasın */
+    }
+
+    .butonlar {
+        display: grid;                
+        grid-template-columns: repeat(4, 1fr);  /* 4 sütun, eşit genişlik */
+        gap: 10px;                    /* Butonlar arası boşluk */
+    }
+
+    
+    .btn {
+        background: #34495e;          
+        color: white;                 
+        border: none;                 
+        padding: 15px;                
+        font-size: 20px;              
+        border-radius: 10px;          
+        cursor: pointer;               
+        transition: all 0.3s ease;     /* Geçiş efekti (yumuşak renk değişimi) */
+    }
+
+    
+    .btn:hover {
+        background: #3d566e;         
+        transform: scale(1.05);         
+    }
+
+    
+    .btn:active {/* tıklanınca */
+        transform: scale(0.95);         
+    }
+
+    
+    .btn:last-child {
+        background: #e67e22;           
+    }
+
+    .btn:last-child:hover {
+        background: #d35400;         
+    }
+
+    
+    .btn:first-child {
+        background: #e74c3c;      
+    }
+
+    .btn:first-child:hover {
+        background: #c0392b;          
+    }</style>
+    
+</head>
+
+<body>
+     <div class="hesap-makinesi">
+        
+        <input type="text" class="ekran" id="ekran" disabled>
+        
+        <div class="butonlar">
+            
+            <!-- 1. SATIR: Temizle ve işlemler -->
+            <button class="btn">C</button>    <!-- Temizle -->
+            <button class="btn">/</button>    <!-- Bölme -->
+            <button class="btn">*</button>    <!-- Çarpma -->
+            <button class="btn">-</button>    <!-- Çıkarma (EKSİLİYORDU) -->
+            
+            <!-- 2. SATIR: 7,8,9 -->
+            <button class="btn">1</button>
+            <button class="btn">2</button>
+            <button class="btn">3</button>
+            <button class="btn">+</button>    <!-- Toplama (BURAYA + GELDİ) -->
+            
+            <!-- 3. SATIR: 4,5,6 -->
+            <button class="btn">4</button>
+            <button class="btn">5</button>
+            <button class="btn">6</button>
+            <!-- BOŞLUK YOK, + ZATEN 2.SATIRDA -->
+            
+            <!-- 4. SATIR: 1,2,3 -->
+            <button class="btn">7</button>
+            <button class="btn">8</button>
+            <button class="btn">9</button>
+            <!-- İşlemler bitti, sayılar devam -->
+            
+            <!-- 5. SATIR: 0 ve nokta -->
+            <button class="btn">0</button>
+            <button class="btn">=</button>    <!-- Eşittir buraya -->
+            
+        </div>
+    </div>
+    <script>
+      // Ekranı al
+var ekran = document.getElementById('ekran');
+
+// Tüm butonları al
+var butonlar = document.querySelectorAll('button');
+
+
+var ilkSayi = '';
+var ikinciSayi = '';
+var islem = '';
+var sira = 1;
+
+
+for(var i = 0; i < butonlar.length; i++) {
+    butonlar[i].onclick = function() {
+        
+        var tiklanan = this.textContent;  
+        
+  
+        if(tiklanan >= '0' && tiklanan <= '9') {
+            
+            if(sira == 1) {
+                ilkSayi = ilkSayi + tiklanan;
+                ekran.value = ilkSayi;
+
+            }
+            else {
+                ikinciSayi = ikinciSayi + tiklanan;
+                ekran.value = ikinciSayi;
+             
+            }
+        }
+        
+    
+        else if(tiklanan == '+' || tiklanan == '-' || tiklanan == '*' || tiklanan == '/') {
+            islem = tiklanan;
+            sira = 2;
+
+        }
+        
+
+        else if(tiklanan == '=') {
+            
+            var s1 = Number(ilkSayi);
+            var s2 = Number(ikinciSayi);
+            var sonuc = 0;
+            
+            if(islem == '+') sonuc = s1 + s2;
+            if(islem == '-') sonuc = s1 - s2;
+            if(islem == '*') sonuc = s1 * s2;
+            if(islem == '/') sonuc = s1 / s2;
+            
+            ekran.value = sonuc;
+ 
+        }
+        
+ 
+        else if(tiklanan == 'C') {
+            ilkSayi = '';
+            ikinciSayi = '';
+            islem = '';
+            sira = 1;
+            ekran.value = '';
+   
+        }
+    }
+}
+    </script>
+</body>
+
+</html>
